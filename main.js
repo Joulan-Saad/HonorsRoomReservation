@@ -15,12 +15,12 @@ app.use(express.static('public', { index: 'LIUhonors_serverside.html' }));
 // Path to the reservations JSON file
 const reservationsFilePath = path.join(__dirname, 'reservations.json');
 
-const roomNumbers = [312,313,314,318];
+const roomNumbers = [312,313,314];
 
 
 // Function to validate the reservation
 function validateReservation(reservation) {
-  console.log('Running Validation function')
+  //console.log('Running Validation function')
   // Validate ID from the JSON file
   const validEmails = require('./fakeValidEmails.json').map(entry => entry.email.toUpperCase());
   if (!validEmails.includes(reservation.email.toUpperCase())) {
@@ -81,8 +81,8 @@ reservationToday=false;
 
 // API endpoint for making a reservation
 app.post('/reserve', (req, res) => {
-  console.log('Running Reserve API')
-  console.log(req.body);
+  //console.log('Running Reserve API')
+  //console.log(req.body);
   const reservation = req.body;
 
   const validation = validateReservation(reservation);
@@ -106,7 +106,7 @@ app.post('/reserve', (req, res) => {
 
 // API endpoint for removing a reservation
 app.delete('/unreserve', (req, res) => {
-  console.log('Running unReserve API')
+  //console.log('Running unReserve API')
   const { email, password, name, room, date, time, duration } = req.body;
 
   let reservations = [];
