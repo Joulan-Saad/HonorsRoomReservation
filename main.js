@@ -15,7 +15,7 @@ app.use(express.static('public', { index: 'LIUhonors_serverside.html' }));
 // Path to the reservations JSON file
 const reservationsFilePath = path.join(__dirname, 'reservations.json');
 
-const roomNumbers = [312,313,314];
+const roomNumbers = [312,313,314,318];
 
 
 // Function to validate the reservation
