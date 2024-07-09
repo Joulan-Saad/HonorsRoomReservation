@@ -181,7 +181,13 @@ app.get('/reservations', (req, res) => {
   const { room, startTime, endTime } = req.query;
   //console.log(room,startTime,endTime)
   const filteredReservations = filterReservations(room, new Date(startTime), new Date(endTime));
-  res.json(filteredReservations);
+
+  const sanitizedReservations = filteredReservations.map(reservation => {
+    const { email, password, ...sanitized } = reservation;
+    return sanitized;
+  });
+
+  res.json(sanitizedReservations);
   //console.log(filteredReservations)
 });
 
