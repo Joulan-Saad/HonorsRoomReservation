@@ -63,18 +63,17 @@
 
         <label for="name">Name:</label>
         <input type="text" id="name" maxlength="30" required><br>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" required><br>
     
         <label for="room">Room:</label>
         <select id="room">
             <option value="312">Room 312</option>
             <option value="313">Room 313</option>
             <option value="314">Room 314</option>
-            <option value="314">Room 318</option>
         </select>
         <br />
-    
-        <label for="date">Date:</label>
-        <input type="date" id="date" required><br>
     
         <label for="time">Reservation Time:</label>
         <input type="time" id="startTime" required><br>
@@ -98,7 +97,6 @@
         <option value=312>Room 312</option>
         <option value=313>Room 313</option>
         <option value=314>Room 314</option>
-        <option value=318>Room 318</option>
     </select>
 
     <!-- Reservation table -->
@@ -123,7 +121,7 @@
                 .then(response => response.json())
                 .then(reservations => {
                     // REMOVE CONSOLE LOG WHEN TESTING IS FINISHED
-                    console.log(reservations)
+                    //console.log(reservations)
                     displayReservations(reservations);
                 })
                 .catch(error => console.error('Error fetching reservations:', error));
@@ -236,7 +234,7 @@
             } catch (error) {
                 console.error('Error:', error);
             };
-            roomSelectorChange(parseInt(document.getElementById('room').value,10))
+            roomSelectorChange(parseInt(document.getElementById('roomSelector').value,10))
         });
     </script>
 </body>

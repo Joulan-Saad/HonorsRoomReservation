@@ -6,6 +6,8 @@ In production, this json will contain the actual emails that will be permitted t
 
 Only valid emails will be permitted to make reservations
 
+Test emails include: test@example.com, test1@example.com, test2@example.com, etc. Check fakeValidEmails.json for the full list
+
 Names are not checked for validity to allow annonymity should they desire [Warning: Word filter not set. Potential for inappropriate language]
 
 Disposable passwords are required for users to modify their own reservation, and are only stored so long as the reservation remains valid
