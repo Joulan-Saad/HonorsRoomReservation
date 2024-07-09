@@ -53,13 +53,13 @@
 
     <form id="reservationForm">
         <label for="email">Email:</label>
-        <input type="text" id="email" required><br>
+        <input type="text" id="email" maxlength="50" required><br>
 
         <label for="password">One time password:</label>
-        <input type="text" id="password" required><br>
+        <input type="text" id="password" maxlength="50" required><br>
 
         <label for="name">Name:</label>
-        <input type="text" id="name" required><br>
+        <input type="text" id="name" maxlength="30" required><br>
     
         <label for="room">Room:</label>
         <select id="room">
@@ -87,7 +87,7 @@
         <button type="remove" id="remove">Delete Reservation</button>
       </form>
       <br />
-      <div id="message" style="text-align: center;"></div>
+      <div id="message" style="text-align: center; color:#ffc72c"></div>
 
       <h2>Reservation display:</h2>
     <select id="roomSelector">
@@ -118,6 +118,8 @@
             fetch(`/reservations?room=${room}&startTime=${startTime}&endTime=${endTime}`)
                 .then(response => response.json())
                 .then(reservations => {
+                    // REMOVE CONSOLE LOG WHEN TESTING IS FINISHED
+                    console.log(reservations)
                     displayReservations(reservations);
                 })
                 .catch(error => console.error('Error fetching reservations:', error));
@@ -150,7 +152,7 @@
 
         // Event listener for room selector
         document.getElementById('roomSelector').addEventListener('change', function() {
-            roomSelectorChange(parseInt(data.value,10));
+            roomSelectorChange(parseInt(document.getElementById('roomSelector').value,10));
         });
 
         function roomSelectorChange(roomNum)
@@ -199,7 +201,7 @@
             } catch (error) {
                 console.error('Error:', error);
             };
-            roomSelectorChange(parseInt(document.getElementById('room').value,10))
+            //roomSelectorChange(parseInt(document.getElementById('room').value,10))
         });
 
 

@@ -1,1 +1,65 @@
-[]
+[
+  {
+    "email": "test@example.com",
+    "password": "2",
+    "name": "12",
+    "room": 312,
+    "date": "2024-07-09",
+    "time": "14:00",
+    "duration": 30
+  },
+  {
+    "email": "test@example.com",
+    "password": "2",
+    "name": "12",
+    "room": 312,
+    "date": "2024-07-09",
+    "time": "20:30",
+    "duration": 30
+  },
+  {
+    "email": "test@example.com",
+    "password": "2",
+    "name": "12",
+    "room": 312,
+    "date": "2024-07-10",
+    "time": "20:30",
+    "duration": 30
+  },
+  {
+    "email": "test1@example.com",
+    "password": "2",
+    "name": "12",
+    "room": 312,
+    "date": "2024-07-09",
+    "time": "14:30",
+    "duration": 30
+  },
+  {
+    "email": "test2@example.com",
+    "password": "2",
+    "name": "12",
+    "room": 312,
+    "date": "2024-07-09",
+    "time": "15:00",
+    "duration": 30
+  },
+  {
+    "email": "test3@example.com",
+    "password": "2",
+    "name": "12",
+    "room": 313,
+    "date": "2024-07-09",
+    "time": "15:00",
+    "duration": 30
+  },
+  {
+    "email": "test4@example.com",
+    "password": "2",
+    "name": "Testing really long name",
+    "room": 312,
+    "date": "2024-07-09",
+    "time": "16:00",
+    "duration": 30
+  }
+]

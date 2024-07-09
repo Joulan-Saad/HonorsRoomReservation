@@ -22,7 +22,7 @@ const roomNumbers = [312,313,314];
 function validateReservation(reservation) {
   console.log('Running Validation function')
   // Validate ID from the JSON file
-  const validEmails = require('./validEmails.json').map(entry => entry.email.toUpperCase());
+  const validEmails = require('./fakeValidEmails.json').map(entry => entry.email.toUpperCase());
   if (!validEmails.includes(reservation.email.toUpperCase())) {
     return { success: false, message: 'Invalid email' };
   }
@@ -72,7 +72,7 @@ reservationToday=false;
 
 
   if (conflictingReservation) {
-    if(reservationToday){return { success: false, message: 'You already have a reservation today!' };}
+    if(reservationToday){return { success: false, message: 'You already have a reservation today! \nYou must have 6 hours between the end of your current reservation and the new time/date' };}
     return { success: false, message: 'Room already reserved for the selected time' };
   }
 
@@ -151,9 +151,10 @@ function deleteOldReservations() {
 }
 
 // Run the function initially when the server starts
+// May want to remove when deploying
 deleteOldReservations();
 
-// Schedule the function to run once a day (every 24 hours)
+// Schedule the function to run once every 2 days (every 48 hours)
 setInterval(deleteOldReservations, 24 * 60 * 60 * 1000); // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
 
 // Function to filter reservations based on room and date range
