@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honors Room Reservations</title>
+    <style>
+        body
+        {
+            background-color: #69B3e7; /* LIU blue 0e82d4*/
+            margin: 5%;
+        }
+        .calenderBox 
+        {
+            padding:5%;
+            background-color: #ffc72c;
+            border-radius:25%;
+            border:dashed red;
+            
+        }
+        .weekDiv
+        {
+            padding:5%;
+            align-self: center;
+        }
+        label,input,form
+        {
+            text-align: center;
+        }
+        #reservationTable
+        {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+        #reservationTable tr, td
+        {
+            border:white;
+            border-style: solid;
+            padding:10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Honors Rooms Reservations!</h1>
+    <br />
+    <div id="readMe" style="text-align:center">Notice: Although you must use your school email to validate that you are permitted to reserve a room</div>
+    <div  style="text-align:center">DO NOT USE ANY ACTUAL PASSWORD THAT YOU USE ANYWHERE ELSE HERE</div>
+    <div  style="text-align:center">ONLY USE DISPOSABLE passwords that have no connection to other security measures</div>
+    <div></div>
+
+    <br />
+
+    <form id="reservationForm">
+        <label for="email">Email:</label>
+        <input type="text" id="email" required><br>
+
+        <label for="password">One time password:</label>
+        <input type="text" id="password" required><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" required><br>
+    
+        <label for="room">Room:</label>
+        <select id="room">
+            <option value="312">Room 312</option>
+            <option value="313">Room 313</option>
+            <option value="314">Room 314</option>
+        </select>
+        <br />
+    
+        <label for="date">Date:</label>
+        <input type="date" id="date" required><br>
+    
+        <label for="time">Reservation Time:</label>
+        <input type="time" id="startTime" required><br>
+        
+        <label for="duration">Reservation Duration:</label>
+        <select id="duration">
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="90">90 minutes</option>
+            <option value="120">2 hours</option>
+        </select>
+        <br />
+        <button type="submit" id="submit">Reserve</button>
+        <button type="remove" id="remove">Delete Reservation</button>
+      </form>
+      <br />
+      <div id="message" style="text-align: center;"></div>
+
+      <h2>Reservation display:</h2>
+    <select id="roomSelector">
+        <option value=312>Room 312</option>
+        <option value=313>Room 313</option>
+        <option value=314>Room 314</option>
+        <option value=318>Room 318</option>
+    </select>
+
+    <!-- Reservation table -->
+    <table id="reservationTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr>
+        </thead>
+        <tbody id="reservationBody"></tbody>
+    </table>
+      <br />
+      <div id="reservationsRow" class="centered-row"></div>
+
+      <script>
+        // Function to fetch reservations for a specific room and date range
+        function fetchReservations(room, startTime, endTime) {
+            fetch(`/reservations?room=${room}&startTime=${startTime}&endTime=${endTime}`)
+                .then(response => response.json())
+                .then(reservations => {
+                    displayReservations(reservations);
+                })
+                .catch(error => console.error('Error fetching reservations:', error));
+        }
+
+        // Function to display reservations in the table
+        function displayReservations(reservations) {
+            const reservationBody = document.getElementById('reservationBody');
+            reservationBody.innerHTML = ''; // Clear existing reservations
+
+            reservations.sort((a, b) => {
+                const dateTimeA = new Date(`${a.date}T${a.time}`);
+                const dateTimeB = new Date(`${b.date}T${b.time}`);
+                return dateTimeB - dateTimeA;
+            });
+            
+            reservations.forEach(reservation => {
+                const fullDateObj = new Date(`${reservation.date}T${reservation.time}Z`)
+                const startTime = new Date('1970-01-01T' + reservation.time)
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${reservation.name}</td>
+                    <td>${fullDateObj.toLocaleDateString('en-US', { dateStyle: 'long' }).slice(0,-6)}</td>
+                    <td>${startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</td>
+                    <td>${new Date(startTime.getTime() + reservation.duration * 60 * 1000).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</td>
+                `;
+                reservationBody.appendChild(row);
+            });
+        }
+
+        // Event listener for room selector
+        document.getElementById('roomSelector').addEventListener('change', function() {
+            roomSelectorChange(parseInt(data.value,10));
+        });
+
+        function roomSelectorChange(roomNum)
+        {
+            const room = roomNum
+            const now = new Date();
+            const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000);
+            const twoDaysAhead = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000);
+            fetchReservations(room, twoDaysAgo.toISOString(), twoDaysAhead.toISOString());
+        }
+
+        // Initial fetch for room 1 reservations
+        window.onload = function() {
+            const roomSelector = document.getElementById('roomSelector');
+            const room = roomSelector.value; // Default room selection
+            const now = new Date();
+            const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000);
+            const twoDaysAhead = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000);
+            fetchReservations(room, twoDaysAgo.toISOString(), twoDaysAhead.toISOString());
+        };
+
+        document.getElementById('reservationForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value;
+            const room = parseInt(document.getElementById('room').value, 10);
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('startTime').value;
+            const duration = parseInt(document.getElementById('duration').value)
+
+            try {
+                const response = await fetch('/reserve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password, name, room, date, time, duration }),
+                });
+
+                const result = await response.json();
+
+                // Display reservation status message
+                document.getElementById('message').innerText = result.message;
+            } catch (error) {
+                console.error('Error:', error);
+            };
+            roomSelectorChange(parseInt(document.getElementById('room').value,10))
+        });
+
+
+        document.getElementById('remove').addEventListener('click', async function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value;
+            const room = parseInt(document.getElementById('room').value, 10);
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('startTime').value;
+            const duration = parseInt(document.getElementById('duration').value)
+
+            try {
+                const response = await fetch('/unreserve', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password, name, room, date, time, duration }),
+                });
+
+                const result = await response.json();
+
+                // Display reservation status message
+                document.getElementById('message').innerText = result.message;
+            } catch (error) {
+                console.error('Error:', error);
+            };
+            roomSelectorChange(parseInt(document.getElementById('room').value,10))
+        });
+    </script>
+</body>
+</html>
+
