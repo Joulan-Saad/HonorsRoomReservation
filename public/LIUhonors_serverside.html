@@ -4,42 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Honors Room Reservations</title>
-    <style>
-        body
-        {
-            background-color: #69B3e7; /* LIU blue 0e82d4*/
-            margin: 5%;
-        }
-        .calenderBox 
-        {
-            padding:5%;
-            background-color: #ffc72c;
-            border-radius:25%;
-            border:dashed red;
-            
-        }
-        .weekDiv
-        {
-            padding:5%;
-            align-self: center;
-        }
-        label,input,form
-        {
-            text-align: center;
-        }
-        #reservationTable
-        {
-            border-spacing: 0;
-            border-collapse: collapse;
-        }
-        #reservationTable tr, td
-        {
-            border:white;
-            border-style: solid;
-            padding:10px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="RoomReservations.css">
+    <style></style>
 </head>
 <body>
     <h1 style="text-align: center;">Honors Rooms Reservations!</h1>
@@ -54,20 +20,22 @@
 
     <br />
 
+
+
     <form id="reservationForm">
-        <label for="email">Email:</label>
+        <label id="emailLabel">Email:</label>
         <input type="text" id="email" maxlength="50" required><br>
 
-        <label for="password">One time password:</label>
+        <label id="passwordLabel">One time password:</label>
         <input type="text" id="password" maxlength="50" required><br>
 
-        <label for="name">Name:</label>
+        <label id="nameLabel">Name:</label>
         <input type="text" id="name" maxlength="30" required><br>
 
-        <label for="date">Date:</label>
+        <label id="dateLabel">Date:</label>
         <input type="date" id="date" required><br>
     
-        <label for="room">Room:</label>
+        <label id="roomLabel">Room:</label>
         <select id="room">
             <option value="312">Room 312</option>
             <option value="313">Room 313</option>
@@ -75,10 +43,10 @@
         </select>
         <br />
     
-        <label for="time">Reservation Time:</label>
+        <label id="timeLabel">Reservation Time:</label>
         <input type="time" id="startTime" required><br>
         
-        <label for="duration">Reservation Duration:</label>
+        <label id="durationLabel">Reservation Duration:</label>
         <select id="duration">
             <option value="30">30 minutes</option>
             <option value="60">1 hour</option>
@@ -86,10 +54,16 @@
             <option value="120">2 hours</option>
         </select>
         <br />
-        <button type="submit" id="submit">Reserve</button>
-        <button type="remove" id="remove">Delete Reservation</button>
+        <span id="blank"></span>
+        <span>
+            <button type="submit" id="submit">Reserve</button>
+            <button type="remove" id="remove">Delete Reservation</button>
+        </span>
+        
       </form>
+      
       <br />
+
       <div id="message" style="text-align: center; color:#ffc72c"></div>
 
       <h2>Reservation display:</h2>
@@ -115,6 +89,12 @@
       <div id="reservationsRow" class="centered-row"></div>
 
       <script>
+        //TODO: Figure out grids to make reservations better. Make reservations in 15 minute increments. 
+        //Optional: they can click on each time slot to reserve it.
+        //Look into CSS variables
+
+
+
         // Function to fetch reservations for a specific room and date range
         function fetchReservations(room, startTime, endTime) {
             fetch(`/reservations?room=${room}&startTime=${startTime}&endTime=${endTime}`)

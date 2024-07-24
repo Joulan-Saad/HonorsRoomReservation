@@ -104,6 +104,7 @@ app.post('/reserve', (req, res) => {
   }
 });
 
+//TODO: Hash passwords 
 // API endpoint for removing a reservation
 app.delete('/unreserve', (req, res) => {
   //console.log('Running unReserve API')
