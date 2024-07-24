@@ -1,0 +1,81 @@
+body
+{
+    background-color: #69B3e7; /* LIU blue 0e82d4*/
+    margin: 5%;
+}
+.calenderBox 
+{
+    padding:5%;
+    background-color: #ffc72c;
+    border-radius:25%;
+    border:dashed red;
+    
+}
+.weekDiv
+{
+    padding:5%;
+    align-self: center;
+}
+#reservationTable
+{
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+#reservationTable tr, td
+{
+    border:white;
+    border-style: solid;
+    padding:10px;
+    text-align: center;
+}
+
+/*
+label,input,form
+{
+    text-align: center;
+}
+*/
+
+/*Grid CSS testing*/
+.email { grid-area: email; }
+.password { grid-area: pass; }
+.name { grid-area: name; }
+.date { grid-area: date; }
+.room { grid-area: room; }
+.time { grid-area: time; }
+.duration { grid-area: dur; }
+.emailLabel { grid-area: emailLabel; }
+.passwordLabel { grid-area: pass; }
+.nameLabel { grid-area: nameLabel; }
+.dateLabel { grid-area: dateLabel; }
+.roomLabel { grid-area: roomLabel; }
+.timeLabel { grid-area: timeLabel; }
+.durationLabel { grid-area: durLabel; }
+.submit { grid-area: submit; }
+.remove { grid-area: rem; }
+
+#reservationForm {
+  display: grid;
+  grid-template-areas:
+    'emailLabel email '
+    'passLabel pass'
+    'nameLabel name'
+    'dateLabel date'
+    'roomLabel room'
+    'timeLabel time'
+    'durLabel dur'
+    'blank submit rem'
+    ;
+  gap: 10px;
+  /*background-color: #2196F3;*/
+  padding: 10px;
+  max-width: 50%;
+  grid-template-columns: 100px minmax(0, 0.75fr) minmax(0, 1fr);
+}
+
+#reservationForm > div {
+  /*background-color: rgba(255, 255, 255, 0.8);*/
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
