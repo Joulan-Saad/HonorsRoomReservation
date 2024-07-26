@@ -20,74 +20,89 @@
 
     <br />
 
+    <!--
+    TODO: 
+    Think about mobile view. maybe make a button to make the reservation form vanish
+    Maybe make the form into a side bar thing to make it slide in and out of view
+    -->
 
+    <div id="bigContainer">
+        <form id="reservationForm">
+            <!--TODO: The <br> elements are the third, invisible row. 
+            Set them up to properly take advantage of the grid system-->
+            <label id="emailLabel">Email:</label>
+            <input type="text" id="email" maxlength="50" required><br>
 
-    <form id="reservationForm">
-        <label id="emailLabel">Email:</label>
-        <input type="text" id="email" maxlength="50" required><br>
+            <label id="passwordLabel">One time password:</label>
+            <input type="text" id="password" maxlength="50" required><br>
 
-        <label id="passwordLabel">One time password:</label>
-        <input type="text" id="password" maxlength="50" required><br>
+            <label id="nameLabel">Name:</label>
+            <input type="text" id="name" maxlength="30" required><br>
 
-        <label id="nameLabel">Name:</label>
-        <input type="text" id="name" maxlength="30" required><br>
-
-        <label id="dateLabel">Date:</label>
-        <input type="date" id="date" required><br>
-    
-        <label id="roomLabel">Room:</label>
-        <select id="room">
-            <option value="312">Room 312</option>
-            <option value="313">Room 313</option>
-            <option value="314">Room 314</option>
-        </select>
-        <br />
-    
-        <label id="timeLabel">Reservation Time:</label>
-        <input type="time" id="startTime" required><br>
+            <label id="dateLabel">Date:</label>
+            <input type="date" id="date" required><br>
         
-        <label id="durationLabel">Reservation Duration:</label>
-        <select id="duration">
-            <option value="30">30 minutes</option>
-            <option value="60">1 hour</option>
-            <option value="90">90 minutes</option>
-            <option value="120">2 hours</option>
-        </select>
-        <br />
-        <span id="blank"></span>
-        <span>
-            <button type="submit" id="submit">Reserve</button>
-            <button type="remove" id="remove">Delete Reservation</button>
+            <label id="roomLabel">Room:</label>
+            <select id="room">
+                <option value="312">Room 312</option>
+                <option value="313">Room 313</option>
+                <option value="314">Room 314</option>
+            </select>
+            <br />
+        
+            <label id="timeLabel">Reservation Time:</label>
+            <input type="time" id="startTime" required><br>
+            
+            <label id="durationLabel">Reservation Duration:</label>
+            <select id="duration">
+                <option value="30">30 minutes</option>
+                <option value="60">1 hour</option>
+                <option value="90">90 minutes</option>
+                <option value="120">2 hours</option>
+            </select>
+            <br />
+            <span id="blank"></span>
+            <span>
+                <button type="submit" id="submit">Reserve</button>
+                <button type="remove" id="remove">Delete Reservation</button>
+            </span>
+            <br />
+            <span></span>
+            <span id="message"></span>
+        </form>
+
+        <span id="calenderTitle">
+            <h2 id="resDisplay">Reservation display:</h2>
+            <select id="roomSelector">
+                <option value=312>Room 312</option>
+                <option value=313>Room 313</option>
+                <option value=314>Room 314</option>
+            </select>
         </span>
-        
-      </form>
+
+        <span id="calenderDisplay">
+            
+            <!-- Reservation table -->
+            <table id="reservationTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start</th>
+                        <th>End</th>
+                    </tr>
+                </thead>
+                <tbody id="reservationBody"></tbody>
+            </table>
+              <br />
+              <div id="reservationsRow" class="centered-row"></div>        
+        </span>
+    </div>
+
+
       
-      <br />
 
-      <div id="message" style="text-align: center; color:#ffc72c"></div>
-
-      <h2>Reservation display:</h2>
-    <select id="roomSelector">
-        <option value=312>Room 312</option>
-        <option value=313>Room 313</option>
-        <option value=314>Room 314</option>
-    </select>
-
-    <!-- Reservation table -->
-    <table id="reservationTable">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Start</th>
-                <th>End</th>
-            </tr>
-        </thead>
-        <tbody id="reservationBody"></tbody>
-    </table>
-      <br />
-      <div id="reservationsRow" class="centered-row"></div>
-
+    
       <script>
         //TODO: Figure out grids to make reservations better. Make reservations in 15 minute increments. 
         //Optional: they can click on each time slot to reserve it.
