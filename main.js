@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const argon2 = require('argon2');
 
 const app = express();
 const port = 3000;
@@ -83,25 +84,11 @@ reservationToday=false;
 app.post('/reserve', (req, res) => {
   //console.log('Running Reserve API')
   //console.log(req.body);
-  const reservation = req.body;
+  //console.log(req.body)
+  //console.log(req.body.email)
+  //req.body.email = argon2.hash(req.body.email)
 
-  const validation = validateReservation(reservation);
-
-  if (validation.success) {
-    // Save the reservation
-    let reservations = [];
-    if (fs.existsSync(reservationsFilePath)) {
-      reservations = require(reservationsFilePath);
-    }
-
-    reservations.push(reservation);
-
-    fs.writeFileSync(reservationsFilePath, JSON.stringify(reservations, null, 2));
-
-    res.json({ success: true, message: 'Reservation successful' });
-  } else {
-    res.json(validation);
-  }
+  reserve(req,res)
 });
 
 //TODO: Hash passwords 
@@ -115,9 +102,11 @@ app.delete('/unreserve', (req, res) => {
     reservations = require(reservationsFilePath);
   }
   // Find the index of the reservation with the same details
-  const index = reservations.findIndex(r => r.email === email && r.password === password && r.name === name && r.room === room && r.date === date && r.time === time && r.duration === duration);
+  //const index = reservations.findIndex(r => r.email === email && r.password === password && r.name === name && r.room === room && r.date === date && r.time === time && r.duration === duration);
+  const index = findReservationIndex(res, reservations, email, password, name, room, date, time, duration)
+  //console.log("index",index)
 
-  if (index !== -1) {
+  /*if (index !== -1) {
       // Remove the reservation from the reservations array
       reservations.splice(index, 1);
 
@@ -127,7 +116,7 @@ app.delete('/unreserve', (req, res) => {
       res.json({ success: true, message: 'Reservation removed successfully' });
   } else {
       res.status(404).json({ success: false, message: 'Reservation not found or unable to be removed' });
-  }
+  }*/
 });
 
 // Function to delete old reservations more than 2 days old
@@ -200,3 +189,69 @@ app.listen(port, () => {
 
 
 */
+
+
+async function reserve(req, res)
+{
+  let hashedPass = await argon2.hash(req.body.password)
+  
+  //console.log(hashedPass)
+  req.body.password = hashedPass
+  //console.log(req.body.password)
+  const reservation = req.body;
+
+  const validation = validateReservation(reservation);
+
+  if (validation.success) {
+    // Save the reservation
+    let reservations = [];
+    if (fs.existsSync(reservationsFilePath)) {
+      reservations = require(reservationsFilePath);
+    }
+
+    reservations.push(reservation);
+
+    fs.writeFileSync(reservationsFilePath, JSON.stringify(reservations, null, 2));
+
+    res.json({ success: true, message: 'Reservation successful' });
+  } else {
+    res.json(validation);
+  }
+}
+
+async function findReservationIndex(res, reservations, email, password, name, room, date, time, duration) {
+  //console.log("client",email, password, name, room, date, time, duration)
+  let result = -1
+
+  for (let i = 0; i < reservations.length; i++) {
+    const r = reservations[i];
+    //console.log("looped",r.email, r.password, r.name, r.room, r.date, r.time, r.duration)
+    if (
+      r.email === email &&
+      r.name === name &&
+      r.room === room &&
+      r.date === date &&
+      r.time === time &&
+      r.duration === duration
+    ) {
+      
+      const isPasswordMatch = await argon2.verify(r.password, password);
+      if (isPasswordMatch) {
+        result = i; // Return the index if all conditions match
+      }
+    }
+  }
+
+
+  if (result !== -1) {
+    // Remove the reservation from the reservations array
+    reservations.splice(result, 1);
+
+    // Write the updated reservations array back to the JSON file or database
+    fs.writeFileSync(reservationsFilePath, JSON.stringify(reservations, null, 2));
+
+    return(res.json({ success: true, message: 'Reservation removed successfully' }))
+  } else {
+      return(res.status(404).json({ success: false, message: 'Reservation not found or unable to be removed' }))
+  }
+}

@@ -195,6 +195,13 @@
 
                 // Display reservation status message
                 document.getElementById('message').innerText = result.message;
+
+                if (document.getElementById('message').innerText.includes("successful"))
+                {
+                    document.getElementById('email').value = "";
+                    document.getElementById('password').value = "";
+                    document.getElementById('name').value = "";
+                }
             } catch (error) {
                 console.error('Error:', error);
             };
@@ -226,6 +233,12 @@
 
                 // Display reservation status message
                 document.getElementById('message').innerText = result.message;
+                if (document.getElementById('message').innerText.includes("successful"))
+                {
+                    document.getElementById('email').value = "";
+                    document.getElementById('password').value = "";
+                    document.getElementById('name').value = "";
+                }
             } catch (error) {
                 console.error('Error:', error);
             };
