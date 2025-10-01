@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Honors Room Reservations</title>
@@ -7,9 +9,20 @@
 </head>
 <body>
     <div class="navbar">
-        <img src="liu-honors.png" alt="Honors Logo" style="width: 30%; max-width: 300px;">
-        <span class="navtitle">Room Reservations!</span>
+        <img src="liu-honors.png" alt="Honors Logo" style="width: 15%;">
+        <span class="navtitle">Honors Rooms Reservations!</span>
     </div>
+    <br />
+    <div class="welcometext">
+        Welcome to the reservation page for the rooms in the Honors Lounge.<br />
+        Please enter your information below to create or modify a reservation.<br />
+    <br />
+        <strong>NOTICE:</strong> Although you must use your school email to validate that you are permitted to reserve a room, <br />
+        DO NOT USE ANY ACTUAL PASSWORD THAT YOU USE ANYWHERE ELSE HERE! <br />
+        Only use DISPOSABLE passwords that have no connection to other security measures you have in place. <br />
+    </div>
+
+    <br />
 
     <!--
     TODO: 
@@ -21,73 +34,55 @@
         <form id="reservationForm">
             <!--TODO: The <br> elements are the third, invisible row. 
             Set them up to properly take advantage of the grid system-->
-            <div class="field">
-               <label id="emailLabel">Email</label>
-               <input type="text" id="email" maxlength="50" required=""><br>
-            </div>
-            <div class="field">
-            <label id="passwordLabel">One-time password</label>
-            <input type="password" id="password" maxlength="50" required=""><br>
-            </div>
-            <div class="field">
-            <label id="nameLabel">Name</label>
-            <input type="text" id="name" maxlength="30" required=""><br>
-            </div>
-            <div class="field">
-            <label id="dateLabel">Date</label><br>
-            <input type="date" id="date" required=""><br>
-            </div>
-            <div class="field">
-            <label id="roomLabel">Room</label>
+            <label id="emailLabel">Email:</label>
+            <input type="text" id="email" maxlength="50" required><br>
+
+            <label id="passwordLabel">One-time password:</label>
+            <input type="password" id="password" maxlength="50" required><br>
+
+            <label id="nameLabel">Name:</label>
+            <input type="text" id="name" maxlength="30" required><br>
+
+            <label id="dateLabel">Date:</label>
+            <input type="date" id="date" required><br>
+        
+            <label id="roomLabel">Room:</label>
             <select id="room">
-                <!--<option value="312">Room 312</option> -->
+                <option value="312">Room 312</option>
                 <option value="313">Room 313</option>
                 <option value="314">Room 314</option>
-                <option value="323">Room 323</option>
             </select>
-            </div>
-            <div class="field">
-            <label id="timeLabel">Reservation Time</label><br>
-            <input type="time" id="startTime" required=""><br>
-            </div>
-            <div class="field">
-            <label id="durationLabel">Reservation Duration</label>
+            <br />
+        
+            <label id="timeLabel">Reservation Time:</label>
+            <input type="time" id="startTime" required><br>
+            
+            <label id="durationLabel">Reservation Duration:</label>
             <select id="duration">
                 <option value="30">30 minutes</option>
                 <option value="60">1 hour</option>
                 <option value="90">90 minutes</option>
                 <option value="120">2 hours</option>
             </select>
-            </div>
-            <div class="field">
+            <br />
             <span id="blank"></span>
             <span>
                 <button type="submit" id="submit">Reserve</button>
-                <button type="remove" id="remove">Cancel</button>
-                <button type="clear" id="clear" onclick="clearForm()">Clear</button>
+                <button type="remove" id="remove">Delete Reservation</button>
+                <button type="clear" id="clear" onclick="clearForm()">Clear Form</button>
             </span>
-            </div>
-            <span id="message" style="font-weight:bold;font-size:1.5em;">
-                <!-- ____________________ -->
-            </span>
+            <br />
+            <span></span>
+            <span id="message"></span>
         </form>
 
         <span id="calenderTitle">
-<div class="welcometext">
-        <!-- Welcome to the reservation page for the rooms in the Honors Lounge.<br /> -->
-        Please enter your information below to create or modify a reservation. You must be an <br><strong>honors student</strong> using your LIU email as well as a one-time password to reserve a room.<br>
-        Only use DISPOSABLE passwords that are unrelated to others you may have. <br>
-    </div><br>
-	<span style="font-weight:bold;color:white;font-size:1em;">Showing reservations for </span>
-	<select id="roomSelector">
-                <!--<option value=312>Room 312</option>-->
-                <option value="313">Room 313</option>
-                <option value="314">Room 314</option>
-                <option value="323">Room 323</option>
+            <h2 id="resDisplay">Reservation display:</h2>
+            <select id="roomSelector">
+                <option value=312>Room 312</option>
+                <option value=313>Room 313</option>
+                <option value=314>Room 314</option>
             </select>
-            <!--
-		<span id="resDisplay" style="position:absolute;right:10px;font-size:2em;font-weight:bold;text-align:end;">Active Reservations for Room <span id="selectedRoom">313</span></span>
-            -->
         </span>
 
         <span id="calenderDisplay">
@@ -104,7 +99,7 @@
                 </thead>
                 <tbody id="reservationBody"></tbody>
             </table>
-              <br>
+              <br />
               <div id="reservationsRow" class="centered-row"></div>        
         </span>
     </div>
@@ -160,14 +155,6 @@
         // Event listener for room selector
         document.getElementById('roomSelector').addEventListener('change', function() {
             roomSelectorChange(parseInt(document.getElementById('roomSelector').value,10));
-            document.getElementById("selectedRoom").innerHTML = document.getElementById("roomSelector").value
-            document.getElementById("room").value = document.getElementById("roomSelector").value
-        });
-
-        document.getElementById('room').addEventListener('change', function() {
-            roomSelectorChange(parseInt(document.getElementById('room').value,10));
-            document.getElementById("selectedRoom").innerHTML = document.getElementById("room").value
-            document.getElementById("roomSelector").value = document.getElementById("room").value
         });
 
         function roomSelectorChange(roomNum)
@@ -196,7 +183,7 @@
             fetchReservations(room, twoDaysAgo.toISOString(), twoDaysAhead.toISOString());
         };
 
-        document.getElementById('submit').addEventListener('click', async function (event) {
+        document.getElementById('reservationForm').addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value;
@@ -220,7 +207,6 @@
 
                 // Display reservation status message
                 document.getElementById('message').innerText = result.message;
-                alert(result.message + "!");
 
                 if (document.getElementById('message').innerText.includes("successful"))
                 {
@@ -271,7 +257,6 @@
             roomSelectorChange(parseInt(document.getElementById('roomSelector').value,10))
         });
     </script>
+</body>
+</html>
 
-
-
-</body></html>
